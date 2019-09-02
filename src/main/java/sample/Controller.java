@@ -39,7 +39,7 @@ public class Controller {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("MainWindow.fxml"));
         stage.setTitle("AdminNearUp");
-        stage.setScene(new Scene(root, 950, 550));
+        stage.setScene(new Scene(root, 1200, 600));
         stage.show();
         stage = (Stage) login.getScene().getWindow();
         stage.close();

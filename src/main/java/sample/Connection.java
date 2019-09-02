@@ -1,7 +1,6 @@
 package sample;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
@@ -12,27 +11,37 @@ public class Connection  {
 
     final private Socket socket = new Socket("localhost", 6789);
 
+    BufferedReader br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
     Connection() throws IOException {
 
 
             for (int i = 0; i < 10; i++) {
-                send("Moder");
-                if (read().equals("ready"))
+                send("awd&&3");
+                String string = read();
+                System.out.println(string);
+                if (string.equals("ready")) {
+                    System.out.println("connected");
                     return;
+                }
             }
             throw new IOException();
+
 
     }
 
     public void send(String s) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
         bw.write(s);
+        bw.newLine();
+        bw.flush();
     }
 
     public String read() throws IOException {
-        BufferedReader br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        return br.readLine();
+
+             return br.readLine();
 
     }
 
@@ -43,25 +52,52 @@ public class Connection  {
 
 
     public List<Place> getPlaces(double lat, double lon) throws IOException {
+        /*
         JSONObject json = new JSONObject();
         json.put("latitude",lat);
         json.put("longitude",lon);
-        send(json.toString());
+        send("places");
+        send( json.toString());
+        */
+        send("places");
+        send(lat +" "+ lon );
 
 
         ArrayList<Place> places = new ArrayList<Place>();
-        JSONObject jsonRead;
-        while (canRread()) {
-            jsonRead = new JSONObject(read());
+        String line;
+        while (!(line = read()).equals("*End*")) {
+            System.out.println(line);
             ObjectMapper mapper = new ObjectMapper();
-            Place place = mapper.readValue(jsonRead.toString(), Place.class);
+            Place place = mapper.readValue(line, Place.class);
             places.add(place);
         }
         return places;
     }
 
+    public void editPlace(Place place) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String s = mapper.writeValueAsString(place);
+        send("editPlace");
+        send(s);
 
-    
+    }
+
+    public List<User> getUsers() throws IOException {
+
+            send("users");
+
+
+        ArrayList<User> users = new ArrayList<User>();
+        String line;
+        while (!(line = read()).equals("*End*")) {
+            System.out.println(line);
+            ObjectMapper mapper = new ObjectMapper();
+            User user = mapper.readValue(line, User.class);
+            users.add(user);
+        }
+        return users;
+    }
+
 
 
 

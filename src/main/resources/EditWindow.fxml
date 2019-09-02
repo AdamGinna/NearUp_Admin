@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.lynden.gmapsfx.GoogleMapView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="editWindow" prefHeight="620.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.202-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.EditWindow">
+   <children>
+      <Label layoutX="57.0" layoutY="46.0" text="Name" />
+      <Label layoutX="57.0" layoutY="98.0" text="Owner" />
+      <Label layoutX="57.0" layoutY="157.0" text="Latitude" />
+      <Label layoutX="52.0" layoutY="209.0" text="Longitude" />
+      <TextArea fx:id="description" layoutX="46.0" layoutY="289.0" prefHeight="304.0" prefWidth="471.0" />
+      <Label layoutX="47.0" layoutY="273.0" text="Description" />
+      <Label layoutX="122.0" layoutY="98.0" />
+      <ImageView fx:id="image" fitHeight="250.0" fitWidth="353.0" layoutX="533.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="name" layoutX="145.0" layoutY="41.0" />
+      <TextField fx:id="owner" editable="false" layoutX="145.0" layoutY="93.0" />
+      <TextField fx:id="latitude" layoutX="145.0" layoutY="152.0" onAction="#mapAction" />
+      <TextField fx:id="longitude" layoutX="145.0" layoutY="204.0" onAction="#mapAction" />
+      <GoogleMapView fx:id="mapView" layoutX="555.0" layoutY="291.0" prefHeight="304.0" prefWidth="314.0" />
+      <Button layoutX="396.0" layoutY="152.0" mnemonicParsing="false" onMouseClicked="#edit" prefHeight="26.0" prefWidth="75.0" text="Edit" />
+      <Button layoutX="396.0" layoutY="204.0" mnemonicParsing="false" onMouseClicked="#cancel" prefHeight="26.0" prefWidth="75.0" text="Cancel" />
+   </children>
+</AnchorPane>

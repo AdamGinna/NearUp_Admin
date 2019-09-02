@@ -7,21 +7,37 @@ public class Place{
 
     private int id;
     private String Name;
-    private String User;
+    private int owner;
     private double longitude;
     private double latitude;
     private Blob image;
     private String Description;
 
-    Place(String name, String user, double lat, double lon)
+    Place()
+    {}
+
+
+    Place(String name, int user, double lat, double lon)
     {
         Name = name;
-        User = user;
+        owner = user;
         latitude = lat;
         longitude = lon;
 
     }
 
+    @Override
+    public String toString() {
+        return "Place{" +
+                "id=" + id +
+                ", Name='" + Name + '\'' +
+                ", User='" + owner + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", image=" + image +
+                ", Description='" + Description + '\'' +
+                '}';
+    }
 
     public int getId() {
         return id;
@@ -76,11 +92,11 @@ public class Place{
         return (int)(Math.pow(p1.latitude-x,2)-Math.pow(p1.longitude-y,2)) - (int)(Math.pow(p2.latitude-x,2)-Math.pow(p2.longitude-y,2));
     }
 
-    public String getUser() {
-        return User;
+    public int getOwner() {
+        return owner;
     }
 
-    public void setUser(String user) {
-        User = user;
+    public void setOwner(int user) {
+        owner = user;
     }
 }
