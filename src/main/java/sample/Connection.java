@@ -11,9 +11,9 @@ public class Connection  {
 
     final private Socket socket = new Socket("localhost", 6789);
 
-    BufferedReader br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    private BufferedReader br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+    private BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
     Connection() throws IOException {
 
@@ -32,14 +32,14 @@ public class Connection  {
 
     }
 
-    public void send(String s) throws IOException {
+    private void send(String s) throws IOException {
 
         bw.write(s);
         bw.newLine();
         bw.flush();
     }
 
-    public String read() throws IOException {
+    private String read() throws IOException {
 
              return br.readLine();
 
@@ -98,6 +98,12 @@ public class Connection  {
         return users;
     }
 
+    public void deletePlace(Place place) throws IOException {
+        send("deletePlace");
+        ObjectMapper mapper = new ObjectMapper();
+        String  s = mapper.writeValueAsString(place);
+        send(s);
+    }
 
 
 

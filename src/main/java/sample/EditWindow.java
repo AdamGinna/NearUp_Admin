@@ -52,9 +52,10 @@ public class EditWindow implements Initializable, MapComponentInitializedListene
 
 
     public void initialize(URL location, ResourceBundle resources) {
-        mapView.addMapInializedListener(this);
 
-        place = MainWindow.choosenPlace;
+        place = MainWindow.chosenPlace;
+
+        mapView.addMapInializedListener(this);
 
         image.setImage((Image) place.getImage());
 

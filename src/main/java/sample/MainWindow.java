@@ -29,7 +29,9 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
     private Connection connection = Main.connection;
 
 
-    public static Place choosenPlace;
+    public static Place chosenPlace;
+
+    public static User chosenUser;
 
     @FXML
     ComboBox comboBox;
@@ -41,10 +43,13 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
     GoogleMapView mapView;
 
     @FXML
-    TableView<Place> table;
+    TableView table;
 
     @FXML
     TextField searchField;
+
+    public static int tableMode;
+
 
     private GoogleMap map;
 
@@ -58,14 +63,16 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
                     new Place("Michael", 3, 45, 56.4)
             );
 
-    private ObservableList<User> dataUsers =
-            FXCollections.observableArrayList();
+
+    private ObservableList<User> dataUsers = FXCollections.observableArrayList();
+
+    private ObservableList<User> dataReating = FXCollections.observableArrayList();
 
     public void mapInitialized() {
 
 
         MapOptions mapOptions = new MapOptions();
-        Place place = table.getItems().get(0);
+        Place place = (Place)table.getItems().get(0);
 
         mapOptions.center(new LatLong(place.getLatitude(), place.getLongitude()))
                 .mapType(MapTypeIdEnum.ROADMAP)
@@ -99,6 +106,8 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
 
     public void initialize(URL location, ResourceBundle resources) {
 
+        tableMode =0;
+
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "Places",
@@ -112,6 +121,7 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
         try {
             //data = (ObservableList<Place>) connection.getPlaces(53.0,18.0);
             dataPlaces.setAll(connection.getPlaces(53, 18.0));
+            dataUsers.setAll(connection.getUsers());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,7 +140,7 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
         int index = table.getSelectionModel().selectedIndexProperty().get();
         if (index < 0)
             return;
-        choosenPlace = table.getItems().get(index);
+        chosenPlace = (Place)table.getItems().get(index);
 
         Stage stage = new Stage();
         Parent root = null;
@@ -147,11 +157,13 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
     }
 
     public void selectPlace() {
+
+
         int index = table.getSelectionModel().selectedIndexProperty().get();
         if (index < 0)
             return;
 
-        Place place = table.getItems().get(index);
+        Place place = (Place)table.getItems().get(index);
         MapOptions mapOptions = new MapOptions();
 
         mapOptions.center(new LatLong(place.getLatitude(), place.getLongitude()))
@@ -182,10 +194,14 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
 
     public void search() {
 
-        final String s = searchField.getText();
-        List<Place> list= table.getItems().stream().filter((p) -> Integer.toString(p.getId()).equals(s)).collect(Collectors.toList());
-        ObservableList<Place> listP = FXCollections.observableArrayList(list);
-        table.setItems(listP);
+
+        String s = searchField.getText();
+        if(!s.equals("")) {
+            TableView<Place> table1 = this.table;
+            List<Place> list = table1.getItems().stream().filter((p) -> Integer.toString(p.getId()).equals(s)).collect(Collectors.toList());
+            ObservableList<Place> listP = FXCollections.observableArrayList(list);
+            table.setItems(listP);
+        }
     }
 
 
@@ -215,14 +231,88 @@ public class MainWindow implements Initializable,MapComponentInitializedListener
         table.getColumns().setAll(idCol, firstNameCol, lastNameCol, latCol, lonCol);
     }
 
+    public void users()
+    {
+        TableColumn idCol = new TableColumn();
+        idCol.setText("id");
+        idCol.setPrefWidth(20);
+        idCol.setCellValueFactory(new PropertyValueFactory("id"));
+        TableColumn firstNameCol = new TableColumn();
+        firstNameCol.setText("Nick");
+        firstNameCol.setMinWidth(200);
+        firstNameCol.setPrefWidth(400);
+        firstNameCol.setCellValueFactory(new PropertyValueFactory("Nick"));
+        TableColumn lastNameCol = new TableColumn();
+        lastNameCol.setText("email");
+        lastNameCol.setMinWidth(100);
+        lastNameCol.setCellValueFactory(new PropertyValueFactory("email"));
+        table.setItems(dataUsers);
+        table.getColumns().setAll(idCol, firstNameCol, lastNameCol);
+    }
+
     public void comboBoxSelected()
     {
         String string = (String)comboBox.getValue();
-        if(string.equals("Places"))
+        if(string.equals("Places")) {
             places();
+            tableMode = 0;
+        }
+        else if(string.equals("Users")) {
+            users();
+            tableMode = 1;
+        }
         //else if(string.equals("Users"))
 
 
     }
 
+    public void delete()
+    {
+        int index = table.getSelectionModel().selectedIndexProperty().get();
+
+        switch (tableMode) {
+            case 0: {
+                if (index < 0)
+                    return;
+                chosenPlace = (Place) table.getItems().get(index);
+
+                Stage stage = new Stage();
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load(getClass().getClassLoader().getResource("DeleteWindow.fxml"));
+
+                    stage.setTitle("AdminNearUp Delete");
+                    stage.setScene(new Scene(root, 600, 470));
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            break;
+        case 1:
+            {
+                if (index < 0)
+                    return;
+                chosenUser = (User) table.getItems().get(index);
+
+                Stage stage = new Stage();
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load(getClass().getClassLoader().getResource("DeleteWindow.fxml"));
+
+                    stage.setTitle("AdminNearUp Delete");
+                    stage.setScene(new Scene(root, 600, 470));
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        break;
+
+    }
+    }
+
 }
+

@@ -43,6 +43,14 @@
                               <Font size="16.0" />
                            </font>
                         </Button>
+                        <Button mnemonicParsing="false" onMouseClicked="#delete" text="Delete">
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children>
                   </VBox>
                   <AnchorPane>
@@ -50,7 +58,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </HBox.margin>
                      <children>
-                        <TableView fx:id="table" cacheShape="false" onMouseClicked="#selectPlace" prefHeight="1000.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="table" cacheShape="false" onMouseReleased="#selectPlace" prefHeight="1000.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
                             <TableColumn minWidth="200.0" prefWidth="700.0" text="Name" />
                             <TableColumn text="User" />
