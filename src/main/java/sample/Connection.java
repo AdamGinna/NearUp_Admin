@@ -21,7 +21,6 @@ public class Connection  {
             for (int i = 0; i < 10; i++) {
                 send("awd&&3");
                 String string = read();
-                System.out.println(string);
                 if (string.equals("ready")) {
                     System.out.println("connected");
                     return;
@@ -45,10 +44,6 @@ public class Connection  {
 
     }
 
-    public boolean canRread() throws IOException {
-        BufferedReader br  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        return br.ready();
-    }
 
 
     public List<Place> getPlaces(double lat, double lon) throws IOException {
@@ -66,7 +61,6 @@ public class Connection  {
         ArrayList<Place> places = new ArrayList<Place>();
         String line;
         while (!(line = read()).equals("*End*")) {
-            System.out.println(line);
             ObjectMapper mapper = new ObjectMapper();
             Place place = mapper.readValue(line, Place.class);
             places.add(place);
@@ -90,7 +84,6 @@ public class Connection  {
         ArrayList<User> users = new ArrayList<User>();
         String line;
         while (!(line = read()).equals("*End*")) {
-            System.out.println(line);
             ObjectMapper mapper = new ObjectMapper();
             User user = mapper.readValue(line, User.class);
             users.add(user);
@@ -106,5 +99,10 @@ public class Connection  {
     }
 
 
-
+    public void deleteUser(User user) throws IOException {
+        send("deleteUser");
+        ObjectMapper mapper = new ObjectMapper();
+        String  s = mapper.writeValueAsString(user);
+        send(s);
+    }
 }

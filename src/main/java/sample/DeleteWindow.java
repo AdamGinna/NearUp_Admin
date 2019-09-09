@@ -14,22 +14,22 @@ import java.util.ResourceBundle;
 public class DeleteWindow implements Initializable {
 
     @FXML
-    Label id;
+    private Label id;
 
     @FXML
-    Label name;
+    private Label name;
 
     @FXML
-    Label latitude;
+    private Label latitude;
 
     @FXML
-    Label longitude;
+    private Label longitude;
 
     @FXML
-    Label owner;
+    private Label owner;
 
     @FXML
-    ImageView image;
+    private ImageView image;
 
     Connection connection = Main.connection;
 
@@ -55,6 +55,9 @@ public class DeleteWindow implements Initializable {
     public void delete() throws IOException {
         Place place = MainWindow.chosenPlace;
         connection.deletePlace(place);
+        Stage stage = (Stage)id.getScene().getWindow();
+        MainWindow.refresh();
+        stage.close();
 
     }
 

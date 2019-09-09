@@ -20,19 +20,19 @@ public class Controller {
 
 
     @FXML
-    AnchorPane login;
+    private AnchorPane login;
 
     @FXML
-    Label waring;
+    private Label waring;
 
     @FXML
-    PasswordField Password;
+    private PasswordField Password;
 
     @FXML
-    TextField Login;
+    private TextField Login;
 
     @FXML
-    void Login() throws IOException {
+    public void Login() throws IOException {
 
         if(Login.getText().equals("admin") && Password.getText().equals("admin"))
         {

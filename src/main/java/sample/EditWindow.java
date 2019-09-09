@@ -19,7 +19,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EditWindow implements Initializable, MapComponentInitializedListener {
-
     private Connection connection = Main.connection;
 
     Place place;
@@ -55,7 +54,7 @@ public class EditWindow implements Initializable, MapComponentInitializedListene
 
         place = MainWindow.chosenPlace;
 
-        mapView.addMapInializedListener(this);
+
 
         image.setImage((Image) place.getImage());
 
@@ -94,6 +93,7 @@ public class EditWindow implements Initializable, MapComponentInitializedListene
 
     public void cancel()
     {
+
         Stage stage = (Stage)editWindow.getScene().getWindow();
         stage.close();
     }
@@ -113,6 +113,9 @@ public class EditWindow implements Initializable, MapComponentInitializedListene
         } catch (IOException e) {
             e.printStackTrace();
         }
+        MainWindow.refresh();
+        Stage stage = (Stage)editWindow.getScene().getWindow();
+        stage.close();
     }
 
 
@@ -131,6 +134,8 @@ public class EditWindow implements Initializable, MapComponentInitializedListene
 
         map = mapView.createMap(mapOptions);
     }
+
+
 
     public void mapAction()
     {
@@ -152,7 +157,7 @@ public class EditWindow implements Initializable, MapComponentInitializedListene
 
         MarkerOptions markerOptions = new MarkerOptions();
 
-        markerOptions.position( new LatLong(place.getLatitude(), place.getLongitude()) )
+        markerOptions.position( new LatLong(Double.parseDouble(latitude.getText()), Double.parseDouble(longitude.getText())) )
                 .visible(Boolean.TRUE)
                 .title(place.getName());
 
